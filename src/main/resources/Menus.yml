@@ -1,0 +1,43 @@
+MENUS:
+  MainMenu:
+    NAME: ''
+    BUTTONS:
+      sample_button1:
+        ITEM_ID: 331
+        SLOT: 2
+        BUTTON_NAME: 'Sample button 1'
+        BUTTON_LORE:
+          - 'Lore line 1'
+          - 'Lore line 2'
+      sample_button2:
+        ITEM_ID: 264
+        SLOT: 6
+        BUTTON_NAME: 'Sample button 2'
+        BUTTON_LORE:
+          - 'Lore line 1'
+          - 'Lore line 2'
+    BLANK_SLOT:
+      ITEM_ID: 102
+      BUTTON_NAME: 'BLANK SLOT'
+      BUTTON_LORE:
+  Menu2:
+    sample_button1:
+      ITEM_ID: 331
+      SLOT: 2
+      BUTTON_NAME: 'Sample button 1'
+      BUTTON_LORE:
+        - 'Lore line 1'
+        - 'Lore line 2'
+    sample_button2:
+      ITEM_ID: 264
+      SLOT: 2
+      BUTTON_NAME: 'Sample button 2'
+      BUTTON_LORE:
+        - 'Lore line 1'
+        - 'Lore line 2'
+    BLANK_SLOT:
+      ITEM_ID: 331
+      SLOT_NAME: 'Sample button 1'
+      SLOT_LORE:
+        - 'Lore line 1'
+        - 'Lore line 2'

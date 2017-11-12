@@ -1,0 +1,18 @@
+#*********************************************************************************************************************#
+# Delay is in ticks, every second has more or less 20 ticks, so, delay at 20 will run once per second
+# In bigger servers with many players small values may reduce tps, in other words, may cause lag, be careful with this value
+# 1200 ticks equals to 60 seconds or one minute
+#*********************************************************************************************************************#
+
+# You should not change this, or you may get some errors and unexpected behavior
+CONFIG_VERSION: 1
+
+# Custom events
+# If you set any event to false and have any plugin that uses that event, the plugin may not work properly or not work at all
+# Any change here may cause any type of issue in your server
+# Only change something here if told to, and be aware of the consequences
+CUSTOM_EVENTS:
+  ITEM_DESPAWN_EVENT:
+    ENABLED: true
+    RUN_DELAY: 1200
+    DISABLE_WARNING: false
