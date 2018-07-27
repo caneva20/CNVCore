@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@SuppressWarnings("ALL")
 public class Vault {
     private Economy economy;
     private Permission permission;
