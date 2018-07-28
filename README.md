@@ -8,5 +8,3 @@ When adding any code here I try to make it as generic as possible, robust and ea
  Well since I'll probably not make a lot more plugins, I thought that would be a waste of code if I kept only to myself. You may find it usefull too, and maybe improve it, that would be nice actually.
 
 There's no main goal for this project or anything like that and nothing is documented yet, and I'll probably not document it, I know, I may sound like a douchebag, but I just wanted to have my code free for everyone who may find it, and along with this I've release all my plugins that use this core, so if you want you can take a look at those and see if you find something that helps you
-
-I made this and the others plugins using spigot 1.5.2, that is also included in the repo, so don't worry Update it to a new version if you want.
