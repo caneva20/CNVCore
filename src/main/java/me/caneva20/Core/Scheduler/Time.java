@@ -1,4 +1,4 @@
-package me.caneva20.Core.CNVScheduler;
+package me.caneva20.Core.Scheduler;
 
 import me.caneva20.Core.Util.Util;
 
@@ -6,22 +6,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class CNVTime {
+public class Time {
     private int hour;
     private int minute;
 
     private boolean executed;
 
-    public CNVTime(int hour, int minute) {
+    public Time(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
     }
 
-    public CNVTime(String time) {
-        CNVTime cnvTime = Util.convertToCNVTime(time);
+    public Time(String timeStr) {
+        Time time = Util.convertToCNVTime(timeStr);
 
-        this.hour = cnvTime != null ? cnvTime.getHour() : 0;
-        this.minute = cnvTime != null ? cnvTime.getMinute() : 0;
+        this.hour = time != null ? time.getHour() : 0;
+        this.minute = time != null ? time.getMinute() : 0;
     }
 
     public int getHour() {
@@ -62,18 +62,3 @@ public class CNVTime {
         return now >= executeTime - tolerance && now <= executeTime + tolerance;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

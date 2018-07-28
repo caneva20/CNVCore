@@ -1,6 +1,6 @@
 package me.caneva20.Core.Util;
 
-import me.caneva20.Core.CNVScheduler.CNVTime;
+import me.caneva20.Core.Scheduler.Time;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -186,7 +186,7 @@ public class Util {
         return location.clone().add(0, 0, -nth).getBlock();
     }
 
-    public static CNVTime convertToCNVTime (String time) {
+    public static Time convertToCNVTime(String time) {
         Pattern pattern = Pattern.compile("^(\\d{2}):(\\d{2})$");
         Matcher m = pattern.matcher(time);
 
@@ -194,7 +194,7 @@ public class Util {
             int hour = Integer.parseInt(m.group(1));
             int minute = Integer.parseInt(m.group(2));
 
-            return new CNVTime(hour, minute);
+            return new Time(hour, minute);
         }
 
         return null;
