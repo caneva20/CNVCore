@@ -1,23 +1,23 @@
 package me.caneva20.Core.CNVScheduler;
 
+import me.caneva20.Core.Generics.A0.Action;
+import me.caneva20.Core.Tasks.Tasks;
 import me.caneva20.Core.Util.Util;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"ALL", "SameReturnValue"})
-public class CNVScheduler {
+public class Scheduler {
     private final JavaPlugin plugin;
     private CNVTime[] times;
-    private CNVTask task;
+    private Action task;
 
-    public CNVScheduler(JavaPlugin plugin, long runDelay, CNVTask task) {
+    public Scheduler(JavaPlugin plugin, long runDelay, Action task) {
         this(plugin, runDelay, task, new CNVTime[0]);
     }
 
-    public CNVScheduler(JavaPlugin plugin, long runDelay, CNVTask task, String[] times) {
+    public Scheduler(JavaPlugin plugin, long runDelay, Action task, String[] times) {
         this.plugin = plugin;
         this.task = task;
 
@@ -32,7 +32,7 @@ public class CNVScheduler {
         start(runDelay);
     }
 
-    public CNVScheduler(JavaPlugin plugin, long runDelay, CNVTask task, CNVTime[] times) {
+    public Scheduler(JavaPlugin plugin, long runDelay, Action task, CNVTime[] times) {
         this.plugin = plugin;
         this.task = task;
         this.times = times;
@@ -41,19 +41,16 @@ public class CNVScheduler {
     }
 
     private void start (final long runDelay) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (CNVTime time : times) {
-                    if (time.canExecute(Util.convertFromTicksToMinutes(runDelay))) {
-                        time.execute();
-                        task.run();
-                    }
+        Tasks.runLater(runDelay, () -> {
+            for (CNVTime time : times) {
+                if (time.canExecute(Util.convertFromTicksToMinutes(runDelay))) {
+                    time.execute();
+                    task.run();
                 }
-
-                resetTimes();
             }
-        }.runTaskTimer(plugin, 0L, runDelay);
+
+            resetTimes();
+        });
     }
 
     private void resetTimes () {
@@ -94,25 +91,3 @@ public class CNVScheduler {
         return null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
