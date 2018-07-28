@@ -1,11 +1,11 @@
-package me.caneva20.Core.CNVTask;
+package me.caneva20.Core.Tasks;
 
 import me.caneva20.Core.Generics.A0.Action;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Task {
+public class Tasks {
     private static JavaPlugin plugin;
 
     private static JavaPlugin getPlugin() {
