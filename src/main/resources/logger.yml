@@ -1,0 +1,35 @@
+#Use this file to configure the default logger behaviour
+SUCCESS:
+  #Should SUCCESS messages be shown?
+  SHOW: true
+  COLORING:
+    MAIN: 'a'
+    PARAM: '2'
+
+ERROR:
+  #Should ERROR messages be shown?
+  SHOW: true
+  COLORING:
+    MAIN: 'c'
+    PARAM: '4'
+
+INFO:
+  #Should INFO messages be shown?
+  SHOW: true
+  COLORING:
+    MAIN: 'b'
+    PARAM: '3'
+
+WARNING:
+  #Should WARNING messages be shown?
+  SHOW: true
+  COLORING:
+    MAIN: 'e'
+    PARAM: '6'
+
+DEBUG:
+  #Should DEBUG messages be shown?
+  SHOW: true
+  COLORING:
+    MAIN: 'b'
+    PARAM: '3'

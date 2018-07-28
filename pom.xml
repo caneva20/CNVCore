@@ -5,8 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.caneva20</groupId>
-    <artifactId>CNVCore</artifactId>
+    <artifactId>c20Core</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <!--deploy:deploy-file -Durl=file:/C:\Users\Jesus\maven-repo -DrepositoryId=br.com.devpaulo -Dfile=C:\Users\Jesus\maven-repo\Legendchat.jar -DartifactId=Legendchat -Dversion=1 -DgroupId=br.com.devpaulo-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>CNVCore</id>
+            <name>CNVCore</name>
+            <url>file:/C:\Users\Jesus\maven-repo</url>
+        </repository>
+    </distributionManagement>
 
     <repositories>
         <repository>

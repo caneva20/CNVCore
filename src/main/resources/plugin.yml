@@ -1,13 +1,12 @@
-name: CNVCore
-version: 1.0
+name: c20Core
+version: 1.0-SNAPSHOT
 description: Core plugin for all my other plugins
 author: caneva20
-authors: [Game_Crytus]
 depend: [Vault]
 
-main: me.caneva20.CNVCore.CNVCore
+main: me.caneva20.Core.Core
 
 commands:
   cnv:
-    description: 'Shows CNVCore info'
+    description: 'Shows Core info'
     default: true
