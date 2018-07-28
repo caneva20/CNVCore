@@ -7,12 +7,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Logger {
     private final JavaPlugin plugin;
-    private String tag = "&f[&6Logger&f] ";
+    private String tag;
     private boolean tagByDefault;
 
     public Logger(JavaPlugin plugin, String tag, boolean tagByDefault) {
         this.plugin = plugin;
-        this.tag = tag == null ? this.tag : tag;
+        this.tag = tag == null ? "&f[&6" + plugin.getName() + "&f] " : tag;
         this.tagByDefault = tagByDefault;
     }
 
