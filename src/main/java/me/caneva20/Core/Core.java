@@ -91,7 +91,14 @@ public class Core extends JavaPlugin {
         commands.registerCommand(new InfoCommand());
         commands.registerCommand(new TestsCommand());
 
-        logger.infoConsole("All commands registered!");
+        //DEBUG
+        me.caneva20.Core.CommanderV2.Commander commander = new me.caneva20.Core.CommanderV2.Commander(this, "cmd", logger());
+        CommandRegister.register(commander, HiCommand.class);
+        CommandRegister.register(commander, FooCommand.class);
+        CommandRegister.register(commander, BarCommand.class);
+//        commander.register(HiCommand.class);
+//        commander.register(FooCommand.class);
+//        commander.register(BarCommand.class);
     }
 
     private void setupListeners() {

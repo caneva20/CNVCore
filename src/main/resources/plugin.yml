@@ -10,3 +10,6 @@ commands:
   cnv:
     description: 'Shows Core info'
     default: true
+  cmd:
+    description: 'Foo'
+    defaut: true
