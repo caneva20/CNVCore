@@ -17,7 +17,7 @@ public class Logger {
     }
 
     public Logger(JavaPlugin plugin) {
-        this(plugin, null, false);
+        this(plugin, null, true);
     }
 
     public Logger(JavaPlugin plugin, boolean tagByDefault) {
@@ -84,7 +84,7 @@ public class Logger {
     }
 
     public void warn(CommandSender to, String message, boolean useTag) {
-        sendMessage(to, message, useTag, MessageLevel.WARN);
+        sendMessage(to, message, useTag, MessageLevel.WARNING);
     }
 
     public void success(CommandSender to, String message) {
@@ -105,7 +105,7 @@ public class Logger {
 
 
     public void debug(String message) {
-        message = format("&f[&bDEBUG&f]" + tag + "&b " + message, MessageLevel.DEBUG);
+        message = format(tag + "&f[&bDEBUG&f]&b " + message, MessageLevel.DEBUG);
 
         plugin.getServer().getConsoleSender().sendMessage(message);
     }

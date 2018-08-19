@@ -27,8 +27,8 @@ public class CommandAction extends Action {
         String method = ((String) get(METHOD)).toUpperCase();
 
         if (player == null) {
-            Core.getMainLogger().errorConsole("INVALID ACTION");
-            Core.getMainLogger().errorConsole("Player not found");
+            Core.logger().errorConsole("INVALID ACTION");
+            Core.logger().errorConsole("Player not found");
 
             return;
         }
@@ -56,11 +56,11 @@ public class CommandAction extends Action {
 
                 break;
             default:
-                Core.getMainLogger().errorConsole("A command could no be executed because <par>" + method + "</par> is not a valid method");
-                Core.getMainLogger().errorConsole("Options are:");
-                Core.getMainLogger().errorConsole("  - OP: Execute as OP");
-                Core.getMainLogger().errorConsole("  - PLAYER: Execute as the player itself");
-                Core.getMainLogger().errorConsole("  - CONSOLE: Execute as the console");
+                Core.logger().errorConsole("A command could no be executed because <par>" + method + "</par> is not a valid method");
+                Core.logger().errorConsole("Options are:");
+                Core.logger().errorConsole("  - OP: Execute as OP");
+                Core.logger().errorConsole("  - PLAYER: Execute as the player itself");
+                Core.logger().errorConsole("  - CONSOLE: Execute as the console");
                 break;
         }
     }

@@ -23,7 +23,7 @@ public class LoggerConfig {
         setLevelColor(MessageLevel.SUCCESS, '2', 'a');
         setLevelColor(MessageLevel.ERROR, '4', 'c');
         setLevelColor(MessageLevel.INFO, '3', 'b');
-        setLevelColor(MessageLevel.WARN, '6', 'e');
+        setLevelColor(MessageLevel.WARNING, '6', 'e');
         setLevelColor(MessageLevel.DEBUG, '3', 'b');
 
         for (MessageLevel level : MessageLevel.values()) {

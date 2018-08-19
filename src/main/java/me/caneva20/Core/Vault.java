@@ -100,10 +100,8 @@ public class Vault {
             return;
         }
 
-        for (org.bukkit.permissions.Permission perms : plugin.getServer().getPluginManager().getPermissions()) {
-            if (perms.getName().equalsIgnoreCase(permission)) {
-                return;
-            }
+        if (plugin.getServer().getPluginManager().getPermissions().contains(permission)) {
+            return;
         }
 
         plugin.getServer().getPluginManager().addPermission(new org.bukkit.permissions.Permission(permission));

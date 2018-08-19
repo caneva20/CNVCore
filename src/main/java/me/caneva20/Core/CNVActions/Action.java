@@ -50,16 +50,16 @@ public abstract class Action {
     //Public
     public void process(Map<String, Object> params, String raw) {
         if (!validate(params)) {
-            Core.getMainLogger().errorConsole("Invalid action. Some required parameters are not defined");
-            Core.getMainLogger().errorConsole("RAW Action: <par>" + raw + "</par>");
-            Core.getMainLogger().errorConsole("---------------------(Details)-----------------------");
+            Core.logger().errorConsole("Invalid action. Some required parameters are not defined");
+            Core.logger().errorConsole("RAW Action: <par>" + raw + "</par>");
+            Core.logger().errorConsole("---------------------(Details)-----------------------");
 
-            getValidation(params).forEach((param, validation) -> Core.getMainLogger().errorConsole(
+            getValidation(params).forEach((param, validation) -> Core.logger().errorConsole(
                     "PARAM: <par>" + param + "</par>: " + (validation.getKey() ? "&aOK" : "&cInvalid, Required") + " > " + validation.getValue()
             ));
 
-            Core.getMainLogger().errorConsole("------------------------------------------------------");
-            Core.getMainLogger().errorConsole("");
+            Core.logger().errorConsole("------------------------------------------------------");
+            Core.logger().errorConsole("");
             return;
         }
 

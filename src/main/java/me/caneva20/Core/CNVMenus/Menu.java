@@ -1,6 +1,6 @@
 package me.caneva20.Core.CNVMenus;
 
-import me.caneva20.Core.Generics.A0.Action;
+import me.caneva20.Core.Generics.Actions.A0.Action;
 import me.caneva20.Core.Util.ColorUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

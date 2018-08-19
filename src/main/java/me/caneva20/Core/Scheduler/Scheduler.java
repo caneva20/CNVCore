@@ -1,6 +1,6 @@
 package me.caneva20.Core.Scheduler;
 
-import me.caneva20.Core.Generics.A0.Action;
+import me.caneva20.Core.Generics.Actions.A0.Action;
 import me.caneva20.Core.Tasks.Tasks;
 import me.caneva20.Core.Util.Util;
 import org.bukkit.plugin.java.JavaPlugin;

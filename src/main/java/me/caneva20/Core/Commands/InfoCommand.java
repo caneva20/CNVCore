@@ -1,7 +1,7 @@
 package me.caneva20.Core.Commands;
 
-import me.caneva20.Core.Command.CommandBase;
-import me.caneva20.Core.Command.ICommand;
+import me.caneva20.Core.Commander.CommandBase;
+import me.caneva20.Core.Commander.ICommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;

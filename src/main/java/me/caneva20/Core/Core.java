@@ -1,7 +1,11 @@
 package me.caneva20.Core;
 
 import me.caneva20.Core.CNVMenus.InventoryListener;
-import me.caneva20.Core.Command.CNVCommands;
+import me.caneva20.Core.Commander.Commander;
+import me.caneva20.Core.CommanderV2.Builder.CommandRegister;
+import me.caneva20.Core.Commands.CommanderV2.HiCommand;
+import me.caneva20.Core.Commands.CommanderV2.BarCommand;
+import me.caneva20.Core.Commands.CommanderV2.FooCommand;
 import me.caneva20.Core.Commands.InfoCommand;
 import me.caneva20.Core.Commands.TestsCommand;
 import me.caneva20.Core.Events.ItemDespawnEventHandler;
@@ -18,11 +22,11 @@ public class Core extends JavaPlugin {
     private static Logger logger;
     private static Vault vault;
 
-    private CNVCommands commands;
+    private Commander commands;
     private Configuration configuration;
     private ItemDespawnEventHandler itemDespawnEventHandler;
 
-    public static Logger getMainLogger() {
+    public static Logger logger() {
         return logger;
     }
 
@@ -44,6 +48,7 @@ public class Core extends JavaPlugin {
         LoggerTags.setup(this);
 
         logger.setLoggerTag("&f[&5c20&6Core&f] ");
+//        logger.setLoggerTag("&f[&5c20&6Core&f] ");
 
         logger.infoConsole("<par>|]=---------------------------------------------------------=[|</par>");
         logger.infoConsole("<par>|</par>		Initializing setup.");
@@ -54,7 +59,7 @@ public class Core extends JavaPlugin {
 
         //Initialize things here
         vault = new Vault(this);
-        commands = new CNVCommands(this, logger);
+        commands = new Commander(this, logger);
         configuration = new Configuration(this);
 
         setupCommands();
@@ -75,7 +80,7 @@ public class Core extends JavaPlugin {
         }
 
         logger.infoConsole("<par>|]=---------------------------------=[|</par>");
-        logger.infoConsole("<par>|</par>             Disabled                  <par>|</par>");
+        logger.infoConsole("<par>|</par>             Disabled                <par>|</par>");
         logger.infoConsole("<par>|]=---------------------------------=[|</par>");
     }
 

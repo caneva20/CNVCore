@@ -16,7 +16,7 @@ public class CNVUniquer {
     public CNVUniquer(Core plugin) {
         this.plugin = plugin;
 
-        logger = Core.getMainLogger();
+        logger = Core.logger();
     }
 
     public ItemStack uniquefy (ItemStack itemStack) {

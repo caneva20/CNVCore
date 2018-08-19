@@ -3,8 +3,8 @@ package me.caneva20.Core.Commands;
 import me.caneva20.Core.CNVActions.ActionProcessor;
 import me.caneva20.Core.CNVMenus.Menu;
 import me.caneva20.Core.CNVMenus.MenuBuilder;
-import me.caneva20.Core.Command.CommandBase;
-import me.caneva20.Core.Command.ICommand;
+import me.caneva20.Core.Commander.CommandBase;
+import me.caneva20.Core.Commander.ICommand;
 import me.caneva20.Core.Core;
 import me.caneva20.Core.Util.KeyValuePair;
 import org.bukkit.command.CommandSender;
@@ -57,14 +57,14 @@ public class TestsCommand extends CommandBase implements ICommand {
     public void onCommand(CommandSender sender, String[] args, JavaPlugin plugin) {
         Menu menu = MenuBuilder.get(plugin).createMenu("MainMenu", 1);
 
-        menu.addButton(2, () -> Core.getMainLogger().info(sender, "Hi, you've triggered an button!"));
+        menu.addButton(2, () -> Core.logger().info(sender, "Hi, you've triggered an button!"));
 
         menu.addButton(6, () -> {
             String action = "ITEM:[ID:264;AMOUNT:{{RANDOM(32,64)}};NAME:Here, take some DIAMONDS!!]";
 
             ActionProcessor.get().processAction(action, new KeyValuePair<>("PLAYER", sender));
 
-            Core.getMainLogger().info(sender, "Enjoy some DIAMONDS!!");
+            Core.logger().info(sender, "Enjoy some DIAMONDS!!");
 
             if (menu.isHighlighted(6)) {
                 menu.unhighlightButton(6);

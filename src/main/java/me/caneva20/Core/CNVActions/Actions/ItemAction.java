@@ -117,7 +117,7 @@ public class ItemAction extends Action {
                 return meta;
             }
 
-            Core.getMainLogger().errorConsole("Enchantment <par>" + enchantName + "</par> not found");
+            Core.logger().errorConsole("Enchantment <par>" + enchantName + "</par> not found");
         } else if (enchant.matches("^\\w+$")) {
             Enchantment enchantment = Enchantment.getByName(enchant);
 
@@ -127,7 +127,7 @@ public class ItemAction extends Action {
                 return meta;
             }
 
-            Core.getMainLogger().errorConsole("Enchantment <par>" + enchant + "</par> not found");
+            Core.logger().errorConsole("Enchantment <par>" + enchant + "</par> not found");
         }
 
         return meta;

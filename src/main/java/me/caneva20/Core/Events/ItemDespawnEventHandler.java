@@ -100,7 +100,7 @@ public class ItemDespawnEventHandler implements Listener {
         }
 
         if (!removedFromSpawned && !removedFromToRemove) {
-            Core.getMainLogger().warnConsole("Item <par>" + Util.itemToString(item) + "</par> could not be removed. It was not in any list");
+            Core.logger().warnConsole("Item <par>" + Util.itemToString(item) + "</par> could not be removed. It was not in any list");
 
             return false;
         } else {
