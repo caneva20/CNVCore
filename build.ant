@@ -7,6 +7,8 @@
         <copy todir="${project.pluginsLocation}/">
             <fileset dir="target">
                 <include name="**.jar"/>
+                <exclude name="**-shaded.jar"/>
+                <exclude name="original-**.jar"/>
             </fileset>
         </copy>
     </target>
