@@ -1,6 +1,6 @@
 package me.caneva20.Core.CommanderV2.ParameterProcessor;
 
-public interface IParameter {
+public interface IParameter<T> {
     String getType();
 
     void setType(String type);
@@ -15,7 +15,7 @@ public interface IParameter {
 
     boolean process(String input);
 
-    <T> T get();
+    T get();
 
     String getErrorMessage(String input);
 }

@@ -77,7 +77,7 @@ public class CommandArgument {
             return null;
         }
 
-        IParameter parameter = getParameter(name);
+        IParameter<T> parameter = getParameter(name);
 
         if (!isProcessed(parameter)) {
             Core.logger().errorConsole(Strings.parameterFoundButNotProcessed(parameter));

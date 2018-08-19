@@ -2,7 +2,9 @@ package me.caneva20.Core.Commands.CommanderV2;
 
 import me.caneva20.Core.CommanderV2.Builder.BaseCommandBuilder;
 import me.caneva20.Core.CommanderV2.BuiltIn.Parameters.BuiltInParameters;
+import me.caneva20.Core.CommanderV2.BuiltIn.Parameters.StringParameter;
 import me.caneva20.Core.CommanderV2.CommandArgument;
+import me.caneva20.Core.CommanderV2.ParameterProcessor.IParameter;
 import me.caneva20.Core.CommanderV2.ParameterProcessor.ParameterAccessor;
 import me.caneva20.Core.Core;
 import me.caneva20.Core.Util.Random;
@@ -27,6 +29,7 @@ public class FooCommand extends BaseCommandBuilder {
 
 //        parameter(BuiltInParameters.String); //Required
         amount = parameter(BuiltInParameters.Int).getAccessor();
+
 //        floatPar = parameter(BuiltInParameters.Float).optional().getAccessor();
 //        parameter(BuiltInParameters.Player).optional().name("Bar");
 

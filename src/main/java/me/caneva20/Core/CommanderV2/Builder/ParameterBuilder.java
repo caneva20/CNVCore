@@ -5,41 +5,41 @@ import me.caneva20.Core.CommanderV2.ParameterProcessor.ParameterAccessor;
 
 import java.util.UUID;
 
-public class ParameterBuilder {
-    private IParameter parameter;
+public class ParameterBuilder<T> {
+    private IParameter<T> parameter;
     private BaseCommandBuilder commandBuilder;
 
     private boolean hasName;
 
-    public ParameterBuilder(IParameter parameter, BaseCommandBuilder commandBuilder) {
+    public ParameterBuilder(IParameter<T> parameter, BaseCommandBuilder commandBuilder) {
         this.parameter = parameter;
         this.commandBuilder = commandBuilder;
     }
 
-    public ParameterBuilder required() {
+    public ParameterBuilder<T> required() {
         parameter.setRequired(true);
 
         return this;
     }
 
-    public ParameterBuilder optional() {
+    public ParameterBuilder<T> optional() {
         parameter.setRequired(false);
 
         return this;
     }
 
-    public ParameterBuilder name(String name) {
+    public ParameterBuilder<T> name(String name) {
         parameter.setName(name);
         hasName = true;
 
         return this;
     }
 
-    public IParameter build() {
+    public IParameter<T> build() {
         return parameter;
     }
 
-    public <T> ParameterAccessor<T> getAccessor() {
+    public ParameterAccessor<T> getAccessor() {
         if (!hasName) {
             name(UUID.randomUUID().toString());
         }

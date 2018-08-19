@@ -49,11 +49,14 @@ public abstract class BaseCommandBuilder implements ICommandBuilder {
         builderCommand.setNoPermission();
     }
 
-    protected ParameterBuilder parameter(Class<? extends IParameter> type) {
-        try {
-            IParameter parameter = type.newInstance();
 
-            ParameterBuilder builder = new ParameterBuilder(parameter, this);
+    //T1 - Player
+    //T2 - IParameter<Player>
+    protected <T1, T2 extends IParameter<T1>> ParameterBuilder<T1> parameter(Class<T2> type) {
+        try {
+            IParameter<T1> parameter = type.newInstance();
+
+            ParameterBuilder<T1> builder = new ParameterBuilder<>(parameter, this);
 
             parameters.add(builder);
 

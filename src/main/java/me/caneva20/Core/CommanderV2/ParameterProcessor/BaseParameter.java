@@ -1,6 +1,6 @@
 package me.caneva20.Core.CommanderV2.ParameterProcessor;
 
-public abstract class BaseParameter<T> implements IParameter {
+public abstract class BaseParameter<T> implements IParameter<T> {
     private String type;
     private String name = null;
     private boolean isRequired;
