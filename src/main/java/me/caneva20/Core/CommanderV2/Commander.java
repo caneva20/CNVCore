@@ -2,24 +2,27 @@ package me.caneva20.Core.CommanderV2;
 
 import javafx.util.Pair;
 import me.caneva20.Core.CommanderV2.BuiltIn.Commands.HelpCommand;
-import me.caneva20.Core.CommanderV2.ParameterProcessor.CommandParameterProcessor;
 import me.caneva20.Core.Core;
 import me.caneva20.Core.Logger.Logger;
 import me.caneva20.Core.Util.CollectionUtil;
+import me.caneva20.Core.Util.Util;
 import me.caneva20.Core.Vault;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public
 class Commander implements CommandExecutor {
-    private Set<ICommand> commands = new HashSet<>();
+//    private Set<ICommand> commands = new HashSet<>();
+    private Map<String, ICommand> commandMap = new HashMap<>();
+    private Map<String, ICommand> aliasMap = new HashMap<>();
     private Logger logger;
     private JavaPlugin plugin;
     private String name;
@@ -34,21 +37,17 @@ class Commander implements CommandExecutor {
         PluginCommand command = plugin.getCommand(name);
 
         if (command == null) {
-            logger.errorConsole(String.format("Command <par>%s</par> was not found in plugin.yml", name));
+            logger.errorConsole(Strings.commandNotFoundInPluginYml(name));
 
             return;
         }
 
-        logger.debug(String.format("Command <par>%s</par> registered", name));
+        logger.debug(Strings.commandRegistered(name));
 
         command.setExecutor(this);
         vault = new Vault(plugin);
 
         registerBuiltIns(plugin);
-    }
-
-    private void registerBuiltIns(JavaPlugin plugin) {
-        registerCommand(new HelpCommand(this).build(plugin, this));
     }
 
     public Commander(JavaPlugin plugin, String name) {
@@ -59,8 +58,8 @@ class Commander implements CommandExecutor {
         return plugin;
     }
 
-    public Set<ICommand> getCommands() {
-        return commands;
+    public Collection<ICommand> getCommands() {
+        return commandMap.values();
     }
 
     public String getName() {
@@ -71,13 +70,21 @@ class Commander implements CommandExecutor {
         return logger;
     }
 
+    private void registerBuiltIns(JavaPlugin plugin) {
+        registerCommand(new HelpCommand(this).build(plugin, this));
+    }
+
     public void registerCommand(ICommand command) {
         if (command == null) {
-            logger.errorConsole(String.format("<par>%s</par> tried to register a <par>null</par> command", plugin.getName()));
+            logger.errorConsole(Strings.pluginTriedToRegisterNullCommand(plugin));
             return;
         }
 
-        commands.add(command);
+        commandMap.put(Util.sanitize(command.getName()), command);
+
+        for (String alias : command.getAliases()) {
+            aliasMap.put(Util.sanitize(alias), command);
+        }
 
         vault.registerPermission(command.getPermission());
     }
@@ -98,45 +105,43 @@ class Commander implements CommandExecutor {
 
         ICommand command = checkCommand.getValue();
 
-        if (!checkPermission(command, sender)) {
-            return false;
-        }
+        CommandProcessor.process(command, sender, logger, arguments, plugin);
 
-        if (!checkOnlyPlayer(command, sender)) {
-            return false;
-        }
-
-        if (!checkOnlyConsole(command, sender)) {
-            return false;
-        }
-
-        CommandArgument argument = CommandParameterProcessor.process(sender, command, arguments);
-
-        if (argument == null) {
-            logger.error(sender, "Sorry, but your command could not be executed");
-            logger.info(sender, command.getUsage());
-            return false;
-        }
-
-        long totalNs = System.nanoTime() - nanoTime;
-
-        Core.logger().debug(String.format("Command <par>%s</par> took <par>%s</par>ms (<par>%s</par>ns) to execute. "
-                + "(Without command.run())", command.getName(), totalNs / 1000000D, totalNs));
-
-        command.run(sender, argument, plugin);
-
-        totalNs = System.nanoTime() - nanoTime;
-
-        Core.logger().debug(String.format("Command <par>%s</par> took <par>%s</par>ms (<par>%s</par>ns) to execute. "
-                + "(With command.run())", command.getName(), totalNs / 1000000D, totalNs));
+        Core.logger().debug(Strings.commandTookToExecute(command, System.nanoTime() - nanoTime, true));
 
         return false;
     }
 
+    private String[] fixArgs(String[] args) {
+        args = CollectionUtil.select(args, String::toLowerCase).toArray(new String[0]);
+
+        if (hasAnyCommand(args)) {
+            return args;
+        }
+
+        return new String[]{""};
+    }
+
+    private String getCommandName(String[] args) {
+        return args[0];
+    }
+
+    private ICommand findCommand(String name) {
+        if (commandMap.containsKey(name)) {
+            return commandMap.get(name);
+        }
+
+        if (aliasMap.containsKey(name)) {
+            return aliasMap.get(name);
+        }
+
+        return null;
+    }
+
     //Checks
     private Pair<Boolean, ICommand> checkCommand(String[] args, CommandSender sender) {
-        if (!hasCommand(args)) {
-            logger.error(sender, "Invalid command");
+        if (!hasAnyCommand(args)) {
+            logger.error(sender, Strings.invalidCommand());
 
             return new Pair<>(false, null);
         }
@@ -146,6 +151,7 @@ class Commander implements CommandExecutor {
 
         if (command == null) {
             logger.error(sender, String.format("Command <par>%s</par> not found", name));
+            logger.error(sender, Strings.commandNotFound(name));
 
             return new Pair<>(false, null);
         }
@@ -153,73 +159,7 @@ class Commander implements CommandExecutor {
         return new Pair<>(true, command);
     }
 
-    private boolean checkPermission(ICommand command, CommandSender sender) {
-        String permission = command.getPermission();
-
-        if (StringUtils.isEmpty(permission)) {
-            return true;
-        }
-
-        boolean hasPermission = sender.hasPermission(permission);
-
-        if (!hasPermission) {
-            logger.error(sender, "Sorry, you don't have permission to run this command");
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean checkOnlyPlayer(ICommand command, CommandSender sender) {
-        boolean isPlayer = sender instanceof Player;
-
-        if (!isPlayer && command.isOnlyPlayer()) {
-            logger.error(sender, "This command can only be executed by players");
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean checkOnlyConsole(ICommand command, CommandSender sender) {
-        boolean isPlayer = sender instanceof Player;
-
-        if (isPlayer && command.isOnlyConsole()) {
-            logger.error(sender, "This command can only be executed through the console");
-            return false;
-        }
-
-        return true;
-    }
-
-
-    private String[] fixArgs(String[] args) {
-        args = CollectionUtil.select(args, String::toLowerCase).toArray(new String[0]);
-
-        if (hasCommand(args)) {
-            return args;
-        }
-
-        return new String[]{""};
-    }
-
-    private boolean hasCommand(String[] args) {
+    private boolean hasAnyCommand(String[] args) {
         return args != null && args.length > 0;
-    }
-
-    private String getCommandName(String[] args) {
-        if (!hasCommand(args)) {
-            return "";
-        }
-
-        return args[0];
-    }
-
-    private ICommand findCommand(String name) {
-        Optional<ICommand> first = commands.stream()
-                .filter(x -> x.getName().equals(name) || x.getAliases().contains(name))
-                .findFirst();
-
-        return first.orElse(null);
     }
 }

@@ -7,11 +7,11 @@ import java.util.UUID;
 
 public class ParameterBuilder<T> {
     private IParameter<T> parameter;
-    private BaseCommandBuilder commandBuilder;
+    private CommandBuilder commandBuilder;
 
     private boolean hasName;
 
-    public ParameterBuilder(IParameter<T> parameter, BaseCommandBuilder commandBuilder) {
+    public ParameterBuilder(IParameter<T> parameter, CommandBuilder commandBuilder) {
         this.parameter = parameter;
         this.commandBuilder = commandBuilder;
     }

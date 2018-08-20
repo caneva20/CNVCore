@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ICommand {
     String getName();
@@ -21,9 +22,9 @@ public interface ICommand {
 
     IParameter[] getParameters();
 
-    Commander getCommander();
+    Commander getCommander(); //TODO: Maybe remove this
 
     String getUsage();
 
-    void run(CommandSender sender, CommandArgument args, JavaPlugin plugin);
+    void run(CommandSender sender, Arguments args, JavaPlugin plugin);
 }

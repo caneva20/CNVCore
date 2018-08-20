@@ -1,16 +1,16 @@
 package me.caneva20.Core.CommanderV2.ParameterProcessor;
 
-import me.caneva20.Core.CommanderV2.CommandArgument;
+import me.caneva20.Core.CommanderV2.Arguments;
 
 public class ParameterAccessor<T> {
     private final String name;
-    private CommandArgument args;
+    private Arguments args;
 
     public ParameterAccessor(String name) {
         this.name = name;
     }
 
-    public void process(CommandArgument args) {
+    public void process(Arguments args) {
         this.args = args;
     }
 

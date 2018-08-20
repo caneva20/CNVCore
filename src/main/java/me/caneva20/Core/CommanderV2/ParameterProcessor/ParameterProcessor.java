@@ -1,28 +1,26 @@
 package me.caneva20.Core.CommanderV2.ParameterProcessor;
 
-import me.caneva20.Core.CommanderV2.CommandArgument;
+import me.caneva20.Core.CommanderV2.Arguments;
 import me.caneva20.Core.CommanderV2.ICommand;
+import me.caneva20.Core.CommanderV2.Strings;
 import me.caneva20.Core.Util.CollectionUtil;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class CommandParameterProcessor {
-    public static CommandArgument process(CommandSender sender, ICommand command, List<String> args) {
+public class ParameterProcessor {
+    public static Arguments process(CommandSender sender, ICommand command, List<String> args) {
         IParameter[] parameters = command.getParameters();
         int min = getMinLength(parameters);
         int max = getMaxLength(parameters);
 
         if (!checkLength(min, max, args)) {
-            String message = String.format("Sorry, but your command can't be processed because it requires <par>%s</par>" +
-                    " to <par>%s</par> parameters and you gave <par>%s</par>", min, max, args.size());
-
-            command.getCommander().getLogger().error(sender, message);
+            command.getCommander().getLogger().error(sender, Strings.yourCommandCantBeProcessedByWrongLength(min, max, args.size()));
 
             return null;
         }
 
-        CommandArgument commandArgument = new CommandArgument(parameters, command);
+        Arguments arguments = new Arguments(parameters, command);
         boolean hasFails = false;
 
         for (int i = 0; i < args.size(); i++) {
@@ -35,14 +33,14 @@ public class CommandParameterProcessor {
                 hasFails = true;
             }
 
-            commandArgument.addProcessed(parameter);
+            arguments.addProcessed(parameter);
         }
 
         if (hasFails) {
             return null;
         }
 
-        return commandArgument;
+        return arguments;
     }
 
     private static int getMinLength(IParameter[] parameters) {

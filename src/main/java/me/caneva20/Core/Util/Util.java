@@ -79,6 +79,10 @@ public class Util {
         return string.replaceAll("[§&](?:[0-9a-fA-F]|[lLKkrRMmNnOo])", "");
     }
 
+    public static String sanitize(String string) {
+        return string.toLowerCase().trim();
+    }
+
     public static String convertToMinute (int seconds) {
         return convertSecondsToMinutes(seconds);
     }

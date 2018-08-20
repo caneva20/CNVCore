@@ -1,7 +1,7 @@
 package me.caneva20.Core.CommanderV2.BuiltIn.Commands;
 
-import me.caneva20.Core.CommanderV2.Builder.BaseCommandBuilder;
-import me.caneva20.Core.CommanderV2.CommandArgument;
+import me.caneva20.Core.CommanderV2.Builder.CommandBuilder;
+import me.caneva20.Core.CommanderV2.Arguments;
 import me.caneva20.Core.CommanderV2.Commander;
 import me.caneva20.Core.CommanderV2.ICommand;
 import me.caneva20.Core.Core;
@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class HelpCommand extends BaseCommandBuilder {
+public class HelpCommand extends CommandBuilder {
     private final Commander commander;
 
     public HelpCommand(Commander commander) {
@@ -27,7 +27,7 @@ public class HelpCommand extends BaseCommandBuilder {
     }
 
     @Override
-    protected void run(CommandSender sender, CommandArgument args, JavaPlugin plugin) {
+    protected void run(CommandSender sender, Arguments args, JavaPlugin plugin) {
         for (ICommand command : commander.getCommands()) {
             String description = StringUtils.isBlank(command.getDescription())
                     ? "NO DESCRIPTION PROVIDED"

@@ -7,11 +7,11 @@ import me.caneva20.Core.Core;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandArgument {
+public class Arguments {
     private final ICommand command;
     private Map<String, Pair<IParameter, Boolean>> parameters = new HashMap<>(); //Boolean = has been processed
 
-    public CommandArgument(IParameter[] parameters, ICommand command) {
+    public Arguments(IParameter[] parameters, ICommand command) {
         this.command = command;
         setParameters(parameters);
     }
@@ -20,7 +20,7 @@ public class CommandArgument {
         parameters.put(parameter.getName().toLowerCase(), new Pair<>(parameter, processed));
 
         if (!processed) {
-            Core.logger().debug(Strings.parameterAddedToArgumets(parameter, command));
+            Core.logger().debug(Strings.parameterAddedToArguments(parameter, command));
         }
     }
 

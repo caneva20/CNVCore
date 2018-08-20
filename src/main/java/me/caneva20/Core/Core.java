@@ -2,7 +2,7 @@ package me.caneva20.Core;
 
 import me.caneva20.Core.CNVMenus.InventoryListener;
 import me.caneva20.Core.Commander.Commander;
-import me.caneva20.Core.CommanderV2.Builder.CommandRegister;
+import me.caneva20.Core.CommanderV2.CommandRegister;
 import me.caneva20.Core.Commands.CommanderV2.HiCommand;
 import me.caneva20.Core.Commands.CommanderV2.BarCommand;
 import me.caneva20.Core.Commands.CommanderV2.FooCommand;
@@ -83,6 +83,8 @@ public class Core extends JavaPlugin {
         logger.infoConsole("<par>|</par>             Disabled                <par>|</par>");
         logger.infoConsole("<par>|]=---------------------------------=[|</par>");
     }
+
+
 
     private void setupCommands() {
         logger.infoConsole("Registering commands");

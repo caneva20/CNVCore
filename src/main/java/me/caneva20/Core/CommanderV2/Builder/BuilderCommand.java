@@ -1,6 +1,6 @@
 package me.caneva20.Core.CommanderV2.Builder;
 
-import me.caneva20.Core.CommanderV2.CommandArgument;
+import me.caneva20.Core.CommanderV2.Arguments;
 import me.caneva20.Core.CommanderV2.Commander;
 import me.caneva20.Core.CommanderV2.ICommand;
 import me.caneva20.Core.CommanderV2.ParameterProcessor.IParameter;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @SuppressWarnings("UnusedReturnValue")
 class BuilderCommand {
-    private Action<CommandSender, CommandArgument, JavaPlugin> runAction;
+    private Action<CommandSender, Arguments, JavaPlugin> runAction;
     private String commandName;
     private String permission;
     private String description;
@@ -72,7 +72,7 @@ class BuilderCommand {
     }
 
 
-    public BuilderCommand runAction(Action<CommandSender, CommandArgument, JavaPlugin> runAction) {
+    public BuilderCommand runAction(Action<CommandSender, Arguments, JavaPlugin> runAction) {
         this.runAction = runAction;
 
         return this;
@@ -133,14 +133,12 @@ class BuilderCommand {
         }
 
         if (StringUtils.isBlank(description)) {
-            Core.logger().warnConsole(Strings.noDescriptionProvided(commandName));
+            Core.logger().warnConsole(Strings.noDescriptionGiven(commandName));
         }
 
         if (autoPermission) {
             permission = makePermission(plugin);
         }
-
-        Core.logger().debug(Strings.commandHasXAliases(commandName, commander, aliases));
 
         String usage = makeUsage(commander);
         IParameter[] parameters = this.parameters.toArray(new IParameter[0]);

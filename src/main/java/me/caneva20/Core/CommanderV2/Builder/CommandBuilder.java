@@ -1,6 +1,6 @@
 package me.caneva20.Core.CommanderV2.Builder;
 
-import me.caneva20.Core.CommanderV2.CommandArgument;
+import me.caneva20.Core.CommanderV2.Arguments;
 import me.caneva20.Core.CommanderV2.Commander;
 import me.caneva20.Core.CommanderV2.ICommand;
 import me.caneva20.Core.CommanderV2.ParameterProcessor.IParameter;
@@ -12,13 +12,32 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseCommandBuilder implements ICommandBuilder {
+public abstract class CommandBuilder implements ICommandBuilder {
     private BuilderCommand builderCommand;
     private List<ParameterBuilder> parameters = new ArrayList<>();
     private List<ParameterAccessor<?>> accessors = new ArrayList<>();
 
-    public BaseCommandBuilder() {
+    public CommandBuilder() {
         builderCommand = new BuilderCommand();
+    }
+
+    private void runAccessors(CommandSender sender, Arguments args, JavaPlugin plugin) {
+        for (ParameterAccessor<?> accessor : accessors) {
+            accessor.process(args);
+        }
+
+        try {
+            run(sender, args, plugin);
+        } catch (Exception ignored) {
+        }
+
+        for (ParameterAccessor<?> accessor : accessors) {
+            accessor.dispose();
+        }
+    }
+
+    void registerAccessor(ParameterAccessor<?> accessor) {
+        accessors.add(accessor);
     }
 
     protected void name(String name) {
@@ -65,6 +84,8 @@ public abstract class BaseCommandBuilder implements ICommandBuilder {
         }
     }
 
+    protected abstract void run(CommandSender sender, Arguments args, JavaPlugin plugin);
+
     @Override
     public ICommand build(JavaPlugin plugin, Commander commander) {
         build();
@@ -79,26 +100,5 @@ public abstract class BaseCommandBuilder implements ICommandBuilder {
         return builderCommand.build(plugin, commander);
     }
 
-    void registerAccessor(ParameterAccessor<?> accessor) {
-        accessors.add(accessor);
-    }
-
-    private void runAccessors(CommandSender sender, CommandArgument args, JavaPlugin plugin) {
-        for (ParameterAccessor<?> accessor : accessors) {
-            accessor.process(args);
-        }
-
-        try {
-            run(sender, args, plugin);
-        } catch (Exception ignored) {
-        }
-
-        for (ParameterAccessor<?> accessor : accessors) {
-            accessor.dispose();
-        }
-    }
-
     public abstract void build();
-
-    protected abstract void run(CommandSender sender, CommandArgument args, JavaPlugin plugin);
 }
