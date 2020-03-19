@@ -4,8 +4,9 @@ import me.caneva20.Core.CommanderV2.ParameterProcessor.IParameter;
 import me.caneva20.Core.Util.CollectionUtil;
 
 import java.util.List;
+import java.util.UUID;
 
-public abstract class BaseCommand implements ICommand {
+public abstract class Command implements ICommand {
     private String name;
     private String permission;
     private String description;
@@ -16,7 +17,7 @@ public abstract class BaseCommand implements ICommand {
     private Commander commander;
     private String usage;
 
-    public BaseCommand(String name, String permission, String description, boolean onlyPlayer, boolean onlyConsole, String usage, IParameter[] parameters, Commander commander, List<String> aliases) {
+    public Command(String name, String permission, String description, boolean onlyPlayer, boolean onlyConsole, String usage, IParameter[] parameters, Commander commander, List<String> aliases) {
         this.name = name.toLowerCase();
         this.permission = permission == null ? "" : permission.toLowerCase();
         this.description = description;

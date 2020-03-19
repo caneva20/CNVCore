@@ -20,7 +20,6 @@ import java.util.Map;
 
 public
 class Commander implements CommandExecutor {
-//    private Set<ICommand> commands = new HashSet<>();
     private Map<String, ICommand> commandMap = new HashMap<>();
     private Map<String, ICommand> aliasMap = new HashMap<>();
     private Logger logger;
@@ -95,7 +94,6 @@ class Commander implements CommandExecutor {
 
         args = fixArgs(args);
         ArrayList<String> arguments = CollectionUtil.asList(args);
-        arguments.remove(0);//Removes the command from the list
 
         Pair<Boolean, ICommand> checkCommand = checkCommand(args, sender);
 

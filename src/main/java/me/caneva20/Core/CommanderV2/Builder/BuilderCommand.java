@@ -4,145 +4,121 @@ import me.caneva20.Core.CommanderV2.Arguments;
 import me.caneva20.Core.CommanderV2.Commander;
 import me.caneva20.Core.CommanderV2.ICommand;
 import me.caneva20.Core.CommanderV2.ParameterProcessor.IParameter;
-import me.caneva20.Core.CommanderV2.Strings;
+import me.caneva20.Core.CommanderV2.ParameterProcessor.ParameterAccessor;
 import me.caneva20.Core.Core;
-import me.caneva20.Core.Generics.Actions.A3.Action;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("UnusedReturnValue")
-class BuilderCommand {
-    private Action<CommandSender, Arguments, JavaPlugin> runAction;
-    private String commandName;
-    private String permission;
-    private String description;
-    private boolean onlyPlayer;
-    private boolean onlyConsole;
-    private List<String> aliases = new ArrayList<>();
-    private List<IParameter> parameters = new ArrayList<>();
+public abstract class BuilderCommand implements IBuilderCommand {
+    private CommandBuilder commandBuilder;
+    private List<ParameterBuilder> parameters = new ArrayList<>();
+    private List<ParameterAccessor<?>> accessors = new ArrayList<>();
+    private List<Class<? extends BuilderCommand>> subCommandBuilders = new ArrayList<>();
 
-    private boolean autoPermission = true;
-
-    BuilderCommand(String commandName) {
-        this.commandName = commandName;
+    public BuilderCommand() {
+        commandBuilder = new CommandBuilder();
     }
 
-    BuilderCommand() {}
-
-    public BuilderCommand name(String name) {
-        if (commandName != null) {
-            Core.logger().warnConsole(Strings.commandAlreadyHasNameDefined(commandName, name));
+    private void runAccessors(CommandSender sender, Arguments args, JavaPlugin plugin) {
+        for (ParameterAccessor<?> accessor : accessors) {
+            accessor.process(args);
         }
 
-        commandName = name;
+        try {
+            run(sender, args, plugin);
+        } catch (Exception ignored) {
+        }
 
-        return this;
+        for (ParameterAccessor<?> accessor : accessors) {
+            accessor.dispose();
+        }
     }
 
-    public BuilderCommand description(String description) {
-        this.description = description;
-
-        return this;
+    void registerAccessor(ParameterAccessor<?> accessor) {
+        accessors.add(accessor);
     }
 
-    private String makePermission(JavaPlugin plugin) {
-        //TODO:
-        return String.format("%s.%s", plugin.getName().toLowerCase(), commandName);
+    protected void name(String name) {
+        commandBuilder.name(name);
     }
 
-    private String makeUsage(Commander commander) {
-        StringBuilder params = new StringBuilder();
-        for (int i = 0; i < parameters.size(); i++) {
-            IParameter par = parameters.get(i);
-            //TODO: Get required and optional formats from config <> and []
-            params.append(par.isRequired() ? String.format("<%s>", par.getType()) : String
-                    .format("&7[%s]", par.getType()));
+    protected void description(String description) {
+        commandBuilder.description(description);
+    }
 
-            if (i != parameters.size() - 1) {
-                params.append(" ");
+    protected void onlyPlayers() {
+        commandBuilder.setOnlyForPlayers();
+    }
+
+    protected void onlyConsole() {
+        commandBuilder.setOnlyForConsole();
+    }
+
+    protected void alias(String alias) {
+        commandBuilder.addAlias(alias);
+    }
+
+    protected void noPermission() {
+        commandBuilder.setNoPermission();
+    }
+
+    protected void permissionless() {
+        commandBuilder.setNoPermission();
+    }
+
+    protected <T1, T2 extends IParameter<T1>> ParameterBuilder<T1> parameter(Class<T2> type) {
+        try {
+            IParameter<T1> parameter = type.newInstance();
+
+            ParameterBuilder<T1> builder = new ParameterBuilder<>(parameter, this);
+
+            parameters.add(builder);
+
+            return builder;
+        } catch (Exception e) {
+            Core.logger().errorConsole(String.format("Parameter %s could not be instantiated", type.getName()));
+
+            throw new NoClassDefFoundError(String.format("Parameter %s could not be instantiated", type.getName()));
+        }
+    }
+
+    protected void addSubCommand(Class<? extends BuilderCommand> command) {
+        subCommandBuilders.add(command);
+    }
+
+    protected abstract void run(CommandSender sender, Arguments args, JavaPlugin plugin);
+
+    @Override
+    public ICommand build(JavaPlugin plugin, Commander commander) {
+        build();
+
+        for (Class<? extends BuilderCommand> subCommandBuilder : subCommandBuilders) {
+            try {
+                ICommand subCommand = subCommandBuilder.newInstance().build(plugin, commander);
+
+                commandBuilder.addSubCommand(subCommand);
+
+                Core.logger().debug(String.format("SubCommand <par>%s</par> was added", subCommand.getName()));
+            } catch (Exception e) {
+                Core.logger().debug("Could not create sub command");
+
+                e.printStackTrace();
             }
         }
 
-        // /cmd foo <required> [optional]
-        return String.format("/<par>%s %s %s</par>", commander.getName(), commandName, params);
-    }
+        commandBuilder.runAction(this::runAccessors);
 
+        for (ParameterBuilder parameterBuilder : parameters) {
+            IParameter parameter = parameterBuilder.build();
 
-    public BuilderCommand runAction(Action<CommandSender, Arguments, JavaPlugin> runAction) {
-        this.runAction = runAction;
-
-        return this;
-    }
-
-    public BuilderCommand setOnlyForPlayers() {
-        if (onlyConsole) {
-            Core.logger().warnConsole(Strings.commandAlreadySetToConsole(commandName));
-        } else {
-            onlyPlayer = true;
+            commandBuilder.addParameter(parameter);
         }
 
-        return this;
+        return commandBuilder.build(plugin, commander);
     }
 
-    public BuilderCommand setOnlyForConsole() {
-        if (onlyPlayer) {
-            Core.logger().warnConsole(Strings.commandAlreadySetToPlayer(commandName));
-        } else {
-            onlyConsole = true;
-        }
-
-        return this;
-    }
-
-    public BuilderCommand addAlias(String alias) {
-        aliases.add(alias);
-
-        return this;
-    }
-
-    public BuilderCommand setNoPermission() {
-        autoPermission = false;
-
-        permission = null;
-
-        return this;
-    }
-
-    public BuilderCommand addParameter(IParameter parameter) {
-        if (parameter.isRequired() && parameters.size() > 0 && !parameters.get(parameters.size() - 1).isRequired()) {
-            Core.logger().errorConsole(Strings.parameterCantBeAddedCauseHasOptional(parameter, commandName));
-
-            return this;
-        }
-
-        parameters.add(parameter);
-
-        Core.logger().debug(Strings.parameterAddedToCommand(parameter, commandName));
-
-        return this;
-    }
-
-    public ICommand build(JavaPlugin plugin, Commander commander) {
-        if (runAction == null) {
-            Core.logger().errorConsole(Strings.noRunActionDefined(commandName));
-            return null;
-        }
-
-        if (StringUtils.isBlank(description)) {
-            Core.logger().warnConsole(Strings.noDescriptionGiven(commandName));
-        }
-
-        if (autoPermission) {
-            permission = makePermission(plugin);
-        }
-
-        String usage = makeUsage(commander);
-        IParameter[] parameters = this.parameters.toArray(new IParameter[0]);
-
-        return new EmptyCommand(commandName, permission, description, onlyPlayer, onlyConsole, usage, parameters, runAction, commander, aliases);
-    }
+    public abstract void build();
 }

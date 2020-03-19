@@ -1,7 +1,7 @@
 package me.caneva20.Core.Commands.CommanderV2;
 
 import me.caneva20.Core.CommanderV2.Arguments;
-import me.caneva20.Core.CommanderV2.Builder.CommandBuilder;
+import me.caneva20.Core.CommanderV2.Builder.BuilderCommand;
 import me.caneva20.Core.CommanderV2.BuiltIn.Parameters.BuiltInParameters;
 import me.caneva20.Core.CommanderV2.ParameterProcessor.ParameterAccessor;
 import me.caneva20.Core.Core;
@@ -33,7 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 *
 * */
 
-public class HiCommand extends CommandBuilder {
+public class HiCommand extends BuilderCommand {
     private final String[] greetings = new String[] {"Hi", "Hey", "Hello", "Olá"};
 
     private ParameterAccessor<Player> player;

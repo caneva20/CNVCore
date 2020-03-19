@@ -1,6 +1,6 @@
 package me.caneva20.Core.CommanderV2.BuiltIn.Commands;
 
-import me.caneva20.Core.CommanderV2.Builder.CommandBuilder;
+import me.caneva20.Core.CommanderV2.Builder.BuilderCommand;
 import me.caneva20.Core.CommanderV2.Arguments;
 import me.caneva20.Core.CommanderV2.Commander;
 import me.caneva20.Core.CommanderV2.ICommand;
@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class HelpCommand extends CommandBuilder {
+public class HelpCommand extends BuilderCommand {
     private final Commander commander;
 
     public HelpCommand(Commander commander) {

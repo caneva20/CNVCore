@@ -4,6 +4,6 @@ import me.caneva20.Core.CommanderV2.Commander;
 import me.caneva20.Core.CommanderV2.ICommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public interface ICommandBuilder {
+public interface IBuilderCommand {
     ICommand build(JavaPlugin plugin, Commander commander);
 }

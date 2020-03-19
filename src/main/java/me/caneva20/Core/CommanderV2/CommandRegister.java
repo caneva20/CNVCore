@@ -1,12 +1,10 @@
 package me.caneva20.Core.CommanderV2;
 
-import me.caneva20.Core.CommanderV2.Builder.ICommandBuilder;
-import me.caneva20.Core.CommanderV2.Commander;
-import me.caneva20.Core.CommanderV2.ICommand;
+import me.caneva20.Core.CommanderV2.Builder.IBuilderCommand;
 import me.caneva20.Core.Core;
 
 public class CommandRegister {
-    public static void register(Commander commander, Class<? extends ICommandBuilder> clazz) {
+    public static void register(Commander commander, Class<? extends IBuilderCommand> clazz) {
         try {
             ICommand command = clazz.newInstance().build(commander.getPlugin(), commander);
 

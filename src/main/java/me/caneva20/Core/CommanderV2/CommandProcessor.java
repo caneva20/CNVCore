@@ -14,6 +14,7 @@ public class CommandProcessor {
 
     public static void process(ICommand command, CommandSender sender, Logger logger, List<String> arguments, JavaPlugin plugin) {
         CommandProcessor.logger = logger;
+        arguments.remove(0);//The first argument is the command name being processed right now, it should now be removed to not be processed again
 
         if (!checkPermission(command, sender)) {
             return;
@@ -27,15 +28,19 @@ public class CommandProcessor {
             return;
         }
 
-        Arguments argument = ParameterProcessor.process(sender, command, arguments);
+        if (command instanceof SubCommander) {
+            ((SubCommander)command).run(sender, arguments, plugin);
+        } else {
+            Arguments argument = ParameterProcessor.process(sender, command, arguments);
 
-        if (argument == null) {
-            logger.error(sender, Strings.yourCommandCantBeExecuted());
-            logger.info(sender, command.getUsage());
-            return;
+            if (argument == null) {
+                logger.error(sender, Strings.yourCommandCantBeExecuted());
+                logger.info(sender, command.getUsage());
+                return;
+            }
+
+            command.run(sender, argument, plugin);
         }
-
-        command.run(sender, argument, plugin);
     }
 
     private static boolean checkPermission(ICommand command, CommandSender sender) {
